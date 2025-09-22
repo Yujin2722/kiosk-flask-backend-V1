@@ -566,8 +566,23 @@ def get_lost_items():
 @app.route("/claims", methods=["GET"])
 def get_claims():
     return jsonify(claims_storage)
+# ------------------------ INIT DB ------------------------ #
+init_db()
+
+def seed_admin():
+    with sqlite3.connect(DB_FILE) as conn:
+        c = conn.cursor()
+        c.execute("SELECT * FROM admin_users LIMIT 1")
+        if not c.fetchone():
+            c.execute(
+                "INSERT INTO admin_users (username, password_hash) VALUES (?, ?)",
+                ("admin", hash_password("admin123"))
+            )
+            conn.commit()
+
+init_db()
+seed_admin()
 
 # ------------------------ MAIN ------------------------ #
 if __name__=="__main__":
-    init_db()
     app.run(host="0.0.0.0", port=5001, debug=True)
