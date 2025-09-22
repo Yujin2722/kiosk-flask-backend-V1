@@ -1,1 +1,5 @@
-pip freeze > requirements.txt
+Flask
+gunicorn
+requests
+opencv-python-headless
+Werkzeug==3.1.3
