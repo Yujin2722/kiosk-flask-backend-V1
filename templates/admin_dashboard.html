@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>Admin Dashboard</title>
+    <style>
+      @font-face {
+        font-family: "Nexa";
+        src: url("/static/fonts/Nexa-ExtraLight.ttf") format("truetype");
+        font-weight: 200;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Nexa";
+        src: url("/static/fonts/Nexa-Heavy.ttf") format("truetype");
+        font-weight: 800;
+        font-style: normal;
+      }
+
+      body {
+        font-family: "Nexa", Arial, sans-serif;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+        background: #f9f9f9;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 0;
+      }
+
+      .title-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo {
+        height: 40px;
+        width: auto;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        line-height: 1;
+      }
+
+      nav {
+        margin-bottom: 20px;
+      }
+
+      nav a {
+        color: rgb(240, 86, 38);
+        font-weight: 800;
+        margin-right: 15px;
+        text-decoration: none;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      /* Registration Forms */
+      .registration-container {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .registration-container form {
+        flex: 1;
+        min-width: 280px;
+      }
+
+      .inline-form .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .inline-form .form-row input[type="text"] {
+        flex: 1;
+        min-width: 150px;
+      }
+
+      .inline-form .form-row input[type="submit"] {
+        flex-shrink: 0;
+        padding: 10px;
+        background-color: rgb(240, 86, 38);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 0.85rem; /* smaller button */
+      }
+
+      .inline-form .form-row input[type="submit"]:hover {
+        background-color: #c8421f;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        background: white;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+      }
+
+      th {
+        background-color: rgb(240, 86, 38);
+        color: white;
+      }
+
+      td form {
+        margin: 0;
+        padding: 0;
+        background: none;
+        box-shadow: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      button.delete-btn {
+        background-color: #cc3300;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      button.delete-btn i {
+        font-size: 0.85rem;
+      }
+
+      button.delete-btn:hover {
+        background-color: #991f00;
+        transform: scale(1.05);
+      }
+
+      caption {
+        caption-side: top;
+        text-align: left;
+        font-weight: bold;
+        font-size: 1.1rem;
+        padding-bottom: 8px;
+        color: #333;
+      }
+
+      h2 {
+        font-family: "Nexa", Arial, sans-serif;
+        text-align: left;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .cards-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .info-card {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-family: "Nexa", Arial, sans-serif;
+        font-weight: bold;
+        font-size: 1.1rem;
+        min-width: 200px;
+        justify-content: center;
+      }
+
+      .info-card i {
+        font-size: 1.8rem;
+      }
+
+      .info-number {
+        font-size: 1.6rem;
+        color: #333;
+      }
+
+      .info-text {
+        text-align: left;
+      }
+
+      .tables-container {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .tables-container > div {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      /* Lost & Found single column */
+      .tables-container.single-column {
+        flex-direction: column;
+      }
+
+      .tables-container table {
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="title-container">
+        <img src="/static/images/logo_orange.png" alt="Logo" class="logo" />
+        <h1>Admin Dashboard</h1>
+      </div>
+      <nav>
+        <a href="{{ url_for('admin_logout') }}">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </nav>
+    </div>
+
+    <!-- Registration Forms -->
+    <div class="registration-container">
+      <!-- Student Registration -->
+      <form
+        method="POST"
+        action="{{ url_for('admin_register_student') }}"
+        class="inline-form"
+      >
+        <h2>Register Student</h2>
+        <div class="form-row">
+          <input
+            type="text"
+            name="tcc_number"
+            placeholder="TCC Number"
+            required
+            pattern="^(TCC|tcc)-[0-9]{4}-202[0-9]$"
+          />
+          <input type="text" name="name" placeholder="Student Name" required />
+          <input type="submit" value="Register Student" />
+        </div>
+      </form>
+
+      <!-- Staff Registration -->
+      <form
+        method="POST"
+        action="{{ url_for('admin_register_staff_user') }}"
+        class="inline-form"
+      >
+        <h2>Register Staff User</h2>
+        <div class="form-row">
+          <input type="text" name="tcc_number" placeholder="TCC Number" />
+          <input type="text" name="name" placeholder="Full Name" required />
+          <input type="submit" value="Register Staff User" />
+        </div>
+      </form>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards-container">
+      <div class="info-card">
+        <i class="fa-solid fa-user" style="color: orange"></i>
+        <div class="info-text">
+          <div>Students</div>
+          <div class="info-number">{{ students | length }}</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <i class="fa-solid fa-user-tie" style="color: #0074d9"></i>
+        <div class="info-text">
+          <div>Staff</div>
+          <div class="info-number">{{ staff | length }}</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <i class="fa-solid fa-question" style="color: red"></i>
+        <div class="info-text">
+          <div>Lost Reports</div>
+          <div class="info-number">
+            {{ reports | selectattr("3", "equalto", "lost") | list | length }}
+          </div>
+        </div>
+      </div>
+      <div class="info-card">
+        <i class="fa-solid fa-magnifying-glass" style="color: green"></i>
+        <div class="info-text">
+          <div>Found Reports</div>
+          <div class="info-number">
+            {{ reports | selectattr("3", "equalto", "found") | list | length }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registered Students & Staff: two columns -->
+    <div class="tables-container">
+      <div>
+        <table>
+          <caption>
+            Registered Students
+          </caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>TCC Number</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ student[1] }}</td>
+              <td>{{ student[2] }}</td>
+              <td>
+                <form
+                  method="POST"
+                  action="{{ url_for('delete_student', student_id=student[0]) }}"
+                >
+                  <button type="submit" class="delete-btn">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="4" style="text-align: center">
+                No students registered.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <table>
+          <caption>
+            Registered Staff Users
+          </caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in staff %}
+            <tr>
+              <td>{{ s[0] }}</td>
+              <td>{{ s[1] }}</td>
+              <td>{{ s[2] }}</td>
+              <td>
+                <form
+                  method="POST"
+                  action="{{ url_for('delete_staff_user', staff_id=s[0]) }}"
+                >
+                  <button type="submit" class="delete-btn">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="4" style="text-align: center">
+                No staff users registered.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Lost & Found Reports: single column -->
+    <div class="tables-container single-column">
+      <div>
+        <table>
+          <caption>
+            Lost Reports
+          </caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>TCC Number</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Reporter Type</th>
+              <th>Timestamp</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set lost_reports = reports | selectattr("3", "equalto", "lost") |
+            list %} {% for report in lost_reports %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ report[1] }}</td>
+              <td>{{ report[2] or 'Unknown' }}</td>
+              <td>{{ report[4].capitalize() }}</td>
+              <td>{{ report[5] }}</td>
+              <td>{{ report[3].capitalize() }}</td>
+              <td>{{ report[6] }}</td>
+              <td>
+                <form
+                  method="POST"
+                  action="{{ url_for('delete_report', report_id=report[0]) }}"
+                >
+                  <button type="submit" class="delete-btn">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="8" style="text-align: center">
+                No lost reports found.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <table>
+          <caption>
+            Found Reports
+          </caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>TCC Number</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Reporter Type</th>
+              <th>Timestamp</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set found_reports = reports | selectattr("3", "equalto", "found")
+            | list %} {% for report in found_reports %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ report[1] }}</td>
+              <td>{{ report[2] or 'Unknown' }}</td>
+              <td>{{ report[4].capitalize() }}</td>
+              <td>{{ report[5] }}</td>
+              <td>{{ report[3].capitalize() }}</td>
+              <td>{{ report[6] }}</td>
+              <td>
+                <form
+                  method="POST"
+                  action="{{ url_for('delete_report', report_id=report[0]) }}"
+                >
+                  <button type="submit" class="delete-btn">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="8" style="text-align: center">
+                No found reports found.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Centered Delete All Buttons -->
+      <div style="text-align: center; margin: 20px 0">
+        <form
+          method="POST"
+          action="{{ url_for('delete_all_reports', report_type='lost') }}"
+          style="display: inline-block; margin-right: 10px"
+        >
+          <button type="submit" class="delete-btn">
+            <i class="fa-solid fa-trash"></i> Delete All Lost Reports
+          </button>
+        </form>
+
+        <form
+          method="POST"
+          action="{{ url_for('delete_all_reports', report_type='found') }}"
+          style="display: inline-block; margin-left: 10px"
+        >
+          <button type="submit" class="delete-btn">
+            <i class="fa-solid fa-trash"></i> Delete All Found Reports
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

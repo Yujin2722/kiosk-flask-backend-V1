@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>CSU Control Panel & TCC Claims</title>
+    <style>
+      @font-face {
+        font-family: "Nexa";
+        src: url("/static/fonts/Nexa-ExtraLight.ttf") format("truetype");
+        font-weight: 200;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Nexa";
+        src: url("/static/fonts/Nexa-Heavy.ttf") format("truetype");
+        font-weight: 800;
+        font-style: normal;
+      }
+
+      body {
+        font-family: "Nexa", Arial, sans-serif;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+        background: #f9f9f9;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .title-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo {
+        height: 40px;
+        width: auto;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: rgb(240, 86, 38);
+      }
+
+      .header nav a {
+        color: rgb(240, 86, 38);
+        font-weight: bold;
+        text-decoration: none;
+        display: flex;
+        gap: 6px;
+      }
+
+      .header nav a:hover {
+        text-decoration: underline;
+      }
+
+      .welcome {
+        margin-bottom: 15px;
+        font-style: italic;
+        color: #555;
+      }
+
+      .message {
+        margin-bottom: 15px;
+        color: red;
+        font-weight: bold;
+      }
+
+      form {
+        background: white;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .card-grid,
+      .category-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 10px;
+        column-gap: 10px;
+        justify-items: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .option input {
+        display: none;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-align: center;
+        width: 150px;
+        height: 80px;
+      }
+
+      .card i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #666;
+      }
+
+      .card span {
+        font-weight: 700;
+        color: #333;
+      }
+
+      .option input:checked + .card {
+        border-color: rgb(240, 86, 38);
+        background: #fff4ef;
+        box-shadow: 0 0 10px rgba(240, 86, 38, 0.4);
+      }
+
+      .option input:checked + .card i {
+        color: rgb(240, 86, 38);
+      }
+
+      .submit-card {
+        all: unset;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgb(240, 86, 38);
+        color: white;
+        font-weight: 800;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-align: center;
+        width: 150px;
+        height: 80px;
+        justify-self: center;
+      }
+
+      .submit-card i {
+        color: white;
+        margin-bottom: 10px;
+        font-size: 2rem;
+      }
+
+      .submit-card:hover {
+        background: rgb(200, 70, 30);
+      }
+
+      .claims-container {
+        background: white;
+        padding: 20px;
+        border-radius: 6px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .claims-container h2 {
+        text-align: center;
+        color: rgb(240, 86, 38);
+        margin-bottom: 10px;
+      }
+
+      .claim-form-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .claims-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .claim-card {
+        border: 2px solid #ccc;
+        border-radius: 12px;
+        padding: 10px;
+        background: #fff;
+        text-align: center;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .claim-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .claim-card img:hover {
+        transform: scale(1.05);
+      }
+
+      .claim-card button {
+        margin-top: 10px;
+        padding: 6px 10px;
+        background: #d9534f;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .live-camera {
+        margin-top: 20px;
+        text-align: center;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .live-camera img {
+        width: 100%;
+        max-width: 400px;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+      }
+
+      .live-camera button {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: rgb(240, 86, 38);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .live-camera button:hover {
+        background: rgb(200, 70, 30);
+      }
+
+      #lightbox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      #lightbox-overlay img {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      }
+
+      @media (max-width: 900px) {
+        .main-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="title-container">
+        <img src="/static/images/logo_orange.png" alt="Logo" class="logo" />
+        <h1>CSU Control Panel</h1>
+      </div>
+      <nav>
+        <a href="{{ url_for('csu_logout') }}">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+      </nav>
+    </div>
+
+    <p class="welcome">
+      Welcome, {{ session.csu_user }}. Please select an action and category to
+      send a command.
+    </p>
+    {% if message %}
+    <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <div class="main-grid">
+      <!-- LEFT: CSU ACTION + CATEGORY -->
+      <form method="POST" action="{{ url_for('csu_control') }}">
+        <label>Select Action:</label>
+        <div class="card-grid">
+          <label class="option">
+            <input type="radio" name="action" value="off" required />
+            <div class="card">
+              <i class="fa-solid fa-door-open"></i><span>OPEN DOOR</span>
+            </div>
+          </label>
+          <label class="option">
+            <input type="radio" name="action" value="on" required />
+            <div class="card">
+              <i class="fa-solid fa-door-closed"></i><span>CLOSE DOOR</span>
+            </div>
+          </label>
+        </div>
+
+        <label>Select Category:</label>
+        <div class="category-grid">
+          {% for cat in categories %}
+          <label class="option">
+            <input type="radio" name="category" value="{{ cat }}" required />
+            <div class="card">
+              {% if cat=="phone"%}<i class="fa-solid fa-mobile-screen"></i> {%
+              elif cat=="wallet"%}<i class="fa-solid fa-wallet"></i> {% elif
+              cat=="umbrella"%}<i class="fa-solid fa-umbrella"></i> {% elif
+              cat=="calculator"%}<i class="fa-solid fa-calculator"></i> {% elif
+              cat=="random"%}<i class="fa-solid fa-shuffle"></i> {% else %}<i
+                class="fa-solid fa-box"
+              ></i
+              >{% endif %}
+              <span>{{ cat.capitalize() }}</span>
+            </div>
+          </label>
+          {% endfor %}
+          <label class="option">
+            <button type="submit" class="submit-card">
+              <i class="fa-solid fa-paper-plane"></i><span>Send Command</span>
+            </button>
+          </label>
+        </div>
+      </form>
+
+      <!-- RIGHT: TCC CLAIMING + LIVE CAMERA -->
+      <div class="claims-container">
+        <h2>TCC Claiming Report & Live Camera</h2>
+
+        <!-- CLAIM SUBMISSION -->
+        <form
+          method="post"
+          action="{{ url_for('upload') }}"
+          enctype="multipart/form-data"
+          class="claim-form-wrapper"
+        >
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              align-items: center;
+              flex-wrap: wrap;
+              margin-bottom: 10px;
+            "
+          >
+            <label
+              ><input type="radio" name="user_type" value="student" required />
+              Student</label
+            >
+            <label
+              ><input type="radio" name="user_type" value="staff" required />
+              Staff</label
+            >
+            <input
+              type="text"
+              name="tcc"
+              placeholder="TCC Number or Staff ID"
+              required
+              style="padding: 8px; flex: 1; min-width: 180px"
+            />
+
+            <!-- Found Item Selection Dropdown -->
+            <select
+              name="found_item_id"
+              required
+              style="padding: 8px; flex: 2; min-width: 180px"
+            >
+              <option value="" disabled selected>Select Found Item</option>
+              {% for item in found_items %}
+              <option value="{{ item.id }}">
+                {{ item.category|capitalize }} - {{ item.description }}
+              </option>
+              {% endfor %}
+            </select>
+
+            <input
+              type="file"
+              name="images"
+              multiple
+              accept="image/*"
+              style="flex: 2; min-width: 180px"
+            />
+          </div>
+          <div style="width: 100%; display: flex; justify-content: center">
+            <button
+              type="submit"
+              style="
+                padding: 8px 12px;
+                background: rgb(240, 86, 38);
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                min-width: 180px;
+              "
+            >
+              Submit / Update Claim
+            </button>
+          </div>
+        </form>
+
+        <!-- CAMERA IP SET + LIVE FEED -->
+        <div class="live-camera">
+          <h3>Live Camera Feed</h3>
+          <form
+            method="post"
+            action="{{ url_for('set_ip') }}"
+            style="
+              margin-bottom: 10px;
+              display: flex;
+              gap: 10px;
+              flex-wrap: wrap;
+            "
+          >
+            <input
+              type="text"
+              name="ip_address"
+              placeholder="Enter IP Camera URL"
+              value="{{ ip_camera_url }}"
+              style="padding: 8px; flex: 1; min-width: 180px"
+            />
+            <button
+              type="submit"
+              style="
+                padding: 8px 12px;
+                background: rgb(240, 86, 38);
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                min-width: 120px;
+              "
+            >
+              Update IP
+            </button>
+          </form>
+          <img src="{{ url_for('video_feed') }}" alt="Live Feed" />
+          <br />
+          <a href="{{ url_for('capture_image') }}"
+            ><button type="button">Capture Image</button></a
+          >
+        </div>
+
+        <div class="claims-grid">
+          {% for claim in claims %}
+          <div class="claim-card">
+            <strong>TCC: {{ claim.tcc }}</strong><br />
+            <small>Last updated: {{ claim.timestamp }}</small>
+            {% for img in claim.images %}
+            <img
+              src="{{ url_for('uploaded_file', filename=img) }}"
+              alt="{{ img }}"
+              class="claim-thumb"
+            />
+            {% endfor %}
+            <form method="post" action="{{ url_for('delete') }}">
+              <input type="hidden" name="tcc" value="{{ claim.tcc }}" />
+              <button type="submit">Delete Claim</button>
+            </form>
+          </div>
+          {% else %}
+          <p class="text-muted">No claims submitted yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox-overlay">
+      <img id="lightbox-image" src="" alt="Full Image" />
+    </div>
+    <script>
+      const overlay = document.getElementById("lightbox-overlay");
+      const lightboxImg = document.getElementById("lightbox-image");
+      document.querySelectorAll(".claim-thumb").forEach((img) => {
+        img.addEventListener("click", () => {
+          lightboxImg.src = img.src;
+          overlay.style.display = "flex";
+        });
+      });
+      overlay.addEventListener("click", () => {
+        overlay.style.display = "none";
+        lightboxImg.src = "";
+      });
+    </script>
+  </body>
+</html>
