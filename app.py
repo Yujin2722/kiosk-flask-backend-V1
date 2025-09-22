@@ -567,8 +567,6 @@ def get_lost_items():
 def get_claims():
     return jsonify(claims_storage)
 # ------------------------ INIT DB ------------------------ #
-init_db()
-
 def seed_admin():
     with sqlite3.connect(DB_FILE) as conn:
         c = conn.cursor()
@@ -579,10 +577,20 @@ def seed_admin():
                 ("admin", hash_password("admin123"))
             )
             conn.commit()
+def seed_csu():
+    with sqlite3.connect(DB_FILE) as conn:
+        c = conn.cursor()
+        c.execute("SELECT * FROM csu_users LIMIT 1")
+        if not c.fetchone():
+            c.execute(
+                "INSERT INTO csu_users (username, password_hash) VALUES (?, ?)",
+                ("csu", hash_password("csu123"))
+            )
+            conn.commit()
 
 init_db()
 seed_admin()
-
+seed_csu()
 # ------------------------ MAIN ------------------------ #
 if __name__=="__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)
